@@ -398,12 +398,14 @@ select {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%2394A3B8' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 12px center;
+  background-size: 16px 16px;
   padding-right: 36px;
   cursor: pointer;
 }
 
 select:focus {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%233E569E' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-size: 16px 16px;
 }
 
 /* Select options */
@@ -521,7 +523,7 @@ textarea {
   animation: cardReveal var(--dur-slow) var(--ease-out) 0.70s both;
 }
 
-/* ── BUTTONS ──────────��──────────���───────────────────────────── */
+/* ── BUTTONS ──────────��──────────����───────────────────────────── */
 button,
 .btn-primary,
 .btn-secondary,
