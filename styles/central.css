@@ -1,0 +1,625 @@
+/* ============================================================
+   DB Softwares — Central de Calculadoras
+   Complemento de calculadora.css (tokens já importados lá)
+   Layout: Hero + dois cards premium side-by-side
+   ============================================================ */
+
+/* ── HERO ─────────────────────────────────────────────────── */
+.central-hero {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 64px 24px 40px;
+  text-align: center;
+  opacity: 0;
+  animation: cardReveal 0.60s var(--ease-out) 0.15s both;
+}
+
+.central-hero__eyebrow {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gold);
+  background: var(--gold-subtle);
+  border: 1px solid var(--gold-border);
+  border-radius: 20px;
+  padding: 4px 14px;
+  margin-bottom: 20px;
+}
+
+.central-hero__title {
+  font-size: clamp(26px, 4vw, 38px);
+  font-weight: 800;
+  color: var(--text-primary);
+  letter-spacing: -0.03em;
+  line-height: 1.2;
+  margin-bottom: 16px;
+}
+
+.central-hero__title-accent {
+  color: var(--blue);
+  position: relative;
+  display: inline-block;
+}
+
+/* Underline dourado no texto de destaque */
+.central-hero__title-accent::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--gold), var(--gold-bright));
+  opacity: 0.75;
+}
+
+.central-hero__desc {
+  font-size: 16px;
+  font-weight: 400;
+  color: var(--text-body);
+  line-height: 1.7;
+  max-width: 520px;
+  margin: 0 auto;
+}
+
+/* ── CARDS SECTION ────────────────────────────────────────── */
+.central-cards {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0 24px 80px;
+  width: 100%;
+}
+
+/* ── SEPARADOR "ou" ───────────────────────────────────────── */
+.central-cards__divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 0 20px;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.central-cards__divider::before,
+.central-cards__divider::after {
+  content: '';
+  display: block;
+  width: 1px;
+  flex: 1;
+  background: var(--border-dark);
+}
+
+.central-cards__divider-text {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-muted);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  background: var(--bg-page);
+  padding: 4px 0;
+}
+
+/* ── CARD BASE ────────────────────────────────────────────── */
+.calc-card {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-card);
+  border-radius: var(--r-xl);
+  border: 1.5px solid var(--border-dark);
+  padding: 40px 36px 32px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition:
+    border-color var(--dur-med) var(--ease-std),
+    box-shadow var(--dur-med) var(--ease-std),
+    transform var(--dur-med) var(--ease-out);
+  box-shadow: var(--shadow-card);
+  outline: none;
+  opacity: 0;
+
+  /* Shine seguindo cursor */
+  background-image: radial-gradient(
+    circle at var(--card-shine-x, 50%) var(--card-shine-y, 50%),
+    rgba(62, 86, 158, 0.03) 0%,
+    transparent 60%
+  );
+}
+
+/* Animações de entrada escalonadas */
+.calc-card--adm {
+  animation: cardReveal var(--dur-slow) var(--ease-out) 0.30s both;
+}
+
+.calc-card--industrial {
+  animation: cardReveal var(--dur-slow) var(--ease-out) 0.45s both;
+}
+
+/* Linha dourada no topo do card */
+.calc-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  opacity: 0;
+  transition: opacity var(--dur-med) var(--ease-std);
+}
+
+.calc-card--adm::before {
+  background: linear-gradient(90deg, transparent, var(--blue), var(--gold), transparent);
+}
+
+.calc-card--industrial::before {
+  background: linear-gradient(90deg, transparent, var(--gold), var(--blue), transparent);
+}
+
+/* Hover state */
+.calc-card:hover,
+.calc-card:focus-visible {
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-4px);
+}
+
+.calc-card--adm:hover,
+.calc-card--adm:focus-visible {
+  border-color: rgba(62, 86, 158, 0.30);
+}
+
+.calc-card--industrial:hover,
+.calc-card--industrial:focus-visible {
+  border-color: rgba(168, 137, 95, 0.35);
+}
+
+.calc-card:hover::before,
+.calc-card:focus-visible::before {
+  opacity: 1;
+}
+
+/* Navegando (após click) */
+.calc-card--navigating {
+  opacity: 0.7;
+  transform: translateY(-2px) scale(0.99);
+  pointer-events: none;
+}
+
+/* ── GLOW DE FUNDO ─────────────────────────────────────────── */
+.calc-card__glow {
+  position: absolute;
+  top: -80px;
+  width: 280px;
+  height: 280px;
+  border-radius: 50%;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity var(--dur-slow) var(--ease-std);
+}
+
+.calc-card--adm .calc-card__glow {
+  right: -80px;
+  background: radial-gradient(circle, rgba(62, 86, 158, 0.10) 0%, transparent 70%);
+}
+
+.calc-card--industrial .calc-card__glow {
+  left: -80px;
+  background: radial-gradient(circle, rgba(168, 137, 95, 0.12) 0%, transparent 70%);
+}
+
+.calc-card:hover .calc-card__glow {
+  opacity: 1;
+}
+
+/* ── ÍCONE ─────────────────────────────────────────────────── */
+.calc-card__icon-wrap {
+  width: 64px;
+  height: 64px;
+  border-radius: var(--r-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 24px;
+  position: relative;
+  flex-shrink: 0;
+  transition: transform var(--dur-med) var(--ease-spring);
+}
+
+.calc-card--adm .calc-card__icon-wrap {
+  background: var(--blue-subtle);
+  border: 1px solid rgba(62, 86, 158, 0.15);
+  color: var(--blue);
+}
+
+.calc-card--industrial .calc-card__icon-wrap {
+  background: var(--gold-subtle);
+  border: 1px solid var(--gold-border);
+  color: var(--gold);
+}
+
+.calc-card:hover .calc-card__icon-wrap {
+  transform: scale(1.06) rotate(-2deg);
+}
+
+.calc-card__icon {
+  width: 36px;
+  height: 36px;
+}
+
+/* ── BODY ──────────────────────────────────────────────────── */
+.calc-card__body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.calc-card__header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+/* ── TAG / BADGE ───────────────────────────────────────────── */
+.calc-card__tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  background: var(--blue-subtle);
+  color: var(--blue);
+  border: 1px solid rgba(62, 86, 158, 0.18);
+}
+
+.calc-card__tag--gold {
+  background: var(--gold-subtle);
+  color: var(--gold);
+  border-color: var(--gold-border);
+}
+
+/* ── TÍTULO E SUBTÍTULO ────────────────────────────────────── */
+.calc-card__title {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  margin-bottom: 6px;
+}
+
+.calc-card__subtitle {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-body);
+  margin-bottom: 20px;
+  line-height: 1.5;
+}
+
+/* ── PROCESS PILLS ─────────────────────────────────────────── */
+.calc-card__processes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 22px;
+}
+
+.calc-card__process-pill {
+  display: inline-block;
+  padding: 4px 10px;
+  background: var(--bg-input);
+  border: 1px solid var(--border-dark);
+  border-radius: var(--r-xs);
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--text-body);
+  letter-spacing: 0.01em;
+  transition:
+    background var(--dur-fast) var(--ease-std),
+    border-color var(--dur-fast) var(--ease-std),
+    color var(--dur-fast) var(--ease-std);
+}
+
+.calc-card--adm:hover .calc-card__process-pill {
+  background: var(--blue-subtle);
+  border-color: rgba(62, 86, 158, 0.18);
+  color: var(--blue);
+}
+
+.calc-card--industrial:hover .calc-card__process-pill {
+  background: var(--gold-subtle);
+  border-color: var(--gold-border);
+  color: var(--gold);
+}
+
+/* ── META LIST ─────────────────────────────────────────────── */
+.calc-card__meta {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 0;
+}
+
+.calc-card__meta-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-body);
+  line-height: 1.4;
+}
+
+.calc-card__meta-item svg {
+  width: 15px;
+  height: 15px;
+  flex-shrink: 0;
+  color: var(--text-muted);
+  transition: color var(--dur-fast);
+}
+
+.calc-card--adm:hover .calc-card__meta-item svg {
+  color: var(--blue);
+}
+
+.calc-card--industrial:hover .calc-card__meta-item svg {
+  color: var(--gold);
+}
+
+/* ── FOOTER / CTA ──────────────────────────────────────────── */
+.calc-card__footer {
+  margin-top: 28px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border-dark);
+}
+
+.calc-card__btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 14px 24px;
+  border-radius: var(--r-sm);
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  position: relative;
+  overflow: hidden;
+  transition:
+    transform var(--dur-fast) var(--ease-spring),
+    box-shadow var(--dur-med) var(--ease-std),
+    background var(--dur-fast) var(--ease-std);
+}
+
+.calc-card__btn svg {
+  width: 17px;
+  height: 17px;
+  flex-shrink: 0;
+  transition: transform var(--dur-fast) var(--ease-spring);
+}
+
+.calc-card__btn:hover svg,
+.calc-card:hover .calc-card__btn svg {
+  transform: translateX(4px);
+}
+
+/* ADM — botão azul */
+.calc-card__btn--adm {
+  background: var(--blue);
+  color: #FFFFFF;
+  box-shadow: var(--shadow-btn);
+}
+
+.calc-card__btn--adm:hover {
+  background: var(--blue-hover);
+  box-shadow: var(--shadow-btn-hover);
+  transform: translateY(-1px);
+}
+
+/* Industrial — botão dourado */
+.calc-card__btn--industrial {
+  background: var(--gold);
+  color: #FFFFFF;
+  box-shadow: var(--shadow-gold);
+}
+
+.calc-card__btn--industrial:hover {
+  background: var(--gold-hover);
+  box-shadow: var(--shadow-gold-hover);
+  transform: translateY(-1px);
+}
+
+/* ── SETA DE HINT (canto superior direito) ─────────────────── */
+.calc-card__arrow-hint {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transform: scale(0.7) translateX(-4px);
+  transition:
+    opacity var(--dur-med) var(--ease-out),
+    transform var(--dur-med) var(--ease-spring);
+  pointer-events: none;
+}
+
+.calc-card--adm .calc-card__arrow-hint {
+  color: var(--blue);
+  background: var(--blue-subtle);
+  border: 1px solid rgba(62, 86, 158, 0.18);
+}
+
+.calc-card--industrial .calc-card__arrow-hint {
+  color: var(--gold);
+  background: var(--gold-subtle);
+  border: 1px solid var(--gold-border);
+}
+
+.calc-card__arrow-hint svg {
+  width: 15px;
+  height: 15px;
+}
+
+.calc-card:hover .calc-card__arrow-hint,
+.calc-card:focus-visible .calc-card__arrow-hint {
+  opacity: 1;
+  transform: scale(1) translateX(0);
+}
+
+/* ── TOP-BAR INFO: suporta botão + data lado a lado ─────────── */
+.top-bar-info {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+/* ── BOTÃO VOLTAR À CENTRAL (aparece no top-bar das calculadoras) ── */
+.btn-voltar-central {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: var(--r-xs);
+  background: var(--bg-input);
+  border: 1.5px solid var(--border-medium);
+  color: var(--text-body);
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    background var(--dur-fast) var(--ease-std),
+    border-color var(--dur-fast) var(--ease-std),
+    color var(--dur-fast) var(--ease-std),
+    box-shadow var(--dur-fast) var(--ease-std),
+    transform var(--dur-fast) var(--ease-spring);
+  white-space: nowrap;
+}
+
+.btn-voltar-central svg {
+  flex-shrink: 0;
+  transition: transform var(--dur-fast) var(--ease-spring);
+}
+
+.btn-voltar-central:hover {
+  background: var(--bg-card);
+  border-color: var(--border-blue);
+  color: var(--blue);
+  box-shadow: var(--shadow-xs);
+  transform: translateX(-1px);
+}
+
+.btn-voltar-central:hover svg {
+  transform: translateX(-2px);
+}
+
+.btn-voltar-central:active {
+  transform: translateX(0) scale(0.97);
+}
+
+/* ── RODAPÉ ────────────────────────────────────────────────── */
+.central-footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  padding: 20px 24px 36px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-muted);
+  opacity: 0;
+  animation: cardReveal 0.5s var(--ease-out) 0.7s both;
+}
+
+.central-footer__brand {
+  font-weight: 700;
+  color: var(--blue);
+}
+
+.central-footer__sep {
+  margin: 0 8px;
+  opacity: 0.5;
+}
+
+.central-footer__version {
+  font-weight: 700;
+  color: var(--gold);
+}
+
+/* ── RESPONSIVE ────────────────────────────────────────────── */
+@media (max-width: 780px) {
+  .central-cards {
+    flex-direction: column;
+    padding: 0 16px 64px;
+  }
+
+  .central-cards__divider {
+    flex-direction: row;
+    padding: 16px 0;
+    gap: 12px;
+  }
+
+  .central-cards__divider::before,
+  .central-cards__divider::after {
+    width: auto;
+    height: 1px;
+    flex: 1;
+  }
+
+  .calc-card {
+    padding: 28px 24px 24px;
+  }
+
+  .central-hero {
+    padding: 40px 16px 28px;
+  }
+
+  .central-hero__title {
+    font-size: 24px;
+  }
+}
+
+@media (max-width: 480px) {
+  .calc-card__title {
+    font-size: 19px;
+  }
+
+  .calc-card__btn {
+    font-size: 13px;
+    padding: 13px 20px;
+  }
+
+  .calc-card__icon-wrap {
+    width: 52px;
+    height: 52px;
+  }
+
+  .calc-card__icon {
+    width: 28px;
+    height: 28px;
+  }
+}
