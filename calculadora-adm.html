@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora ADM | DB Interna</title>
+    <link rel="stylesheet" href="css/style.css?v=_CACHE_BUST_">
+</head>
+<body>
+    <div class="app-container">
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <img src="assets/logo.png" alt="DB Softwares" class="sidebar-logo">
+                <p class="user-name" id="userName">Carregando...</p>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item"><a href="dashboard.html">🏠 Dashboard</a></li>
+                <li class="nav-item active"><a href="adm.html">📊 Calculadora ADM</a></li>
+                <li class="nav-item"><a href="industrial.html">🏭 Calculadora Industrial</a></li>
+                <li class="nav-item"><a href="#" id="logoutBtn">🚪 Sair</a></li>
+            </ul>
+        </nav>
+        <main class="main-content">
+            <header class="top-bar">
+                <h1>Calculadora ADM</h1>
+                <div class="top-bar-info">
+                    <span id="currentDate"></span>
+                </div>
+            </header>
+            <div class="content-area">
+                <form id="admForm">
+                    <!-- INFORMAÇÕES GERAIS -->
+                    <fieldset>
+                        <legend>📋 Identificação</legend>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Nome do processo *</label>
+                                <input type="text" id="nome_processo" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Cliente *</label>
+                                <input type="text" id="cliente" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Consultor DB *</label>
+                                <input type="text" id="consultor" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Data *</label>
+                                <input type="date" id="data_diagnostico" required>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <!-- BLOCO 1 -->
+                    <fieldset>
+                        <legend>Bloco 1 – Tipo de Processo</legend>
+                        <div class="form-group">
+                            <label>Tipo principal do processo *</label>
+                            <select id="tipo_processo" required>
+                                <option value="">Selecione...</option>
+                                <option value="financeiro">Financeiro</option>
+                                <option value="fiscal">Fiscal / Tributário</option>
+                                <option value="compras">Compras</option>
+                                <option value="backoffice">Backoffice operacional</option>
+                                <option value="erp_sap">ERP / SAP administrativo</option>
+                                <option value="rh">RH</option>
+                                <option value="outra">Outra</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Área responsável *</label>
+                            <select id="area_responsavel" required>
+                                <option value="">Selecione...</option>
+                                <option value="financeiro">Financeiro</option>
+                                <option value="fiscal">Fiscal</option>
+                                <option value="compras">Compras</option>
+                                <option value="operacoes">Operações</option>
+                                <option value="ti">TI</option>
+                                <option value="rh">RH</option>
+                                <option value="outra">Outra</option>
+                            </select>
+                        </div>
+                    </fieldset>
+
+                    <!-- BLOCO 2 -->
+                    <fieldset>
+                        <legend>Bloco 2 – Criticidade</legend>
+                        <div class="form-group">
+                            <label>Se esse processo falhar, o impacto é: *</label>
+                            <select id="criticidade" required>
+                                <option value="">Selecione...</option>
+                                <option value="baixo">Baixo – apenas retrabalho interno</option>
+                                <option value="medio">Médio – atraso, ajuste manual</option>
+                                <option value="alto">Alto – impacto financeiro, fiscal ou regulatório</option>
+                            </select>
+                        </div>
+                    </fieldset>
+
+                    <!-- BLOCO 3 -->
+                    <fieldset>
+                        <legend>Bloco 3 – Frequência e Volume</legend>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Volume *</label>
+                                <select id="volume" required>
+                                    <option value="">Selecione...</option>
+                                    <option value="baixo">Baixo</option>
+                                    <option value="medio">Médio</option>
+                                    <option value="alto">Alto</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Frequência *</label>
+                                <select id="frequencia" required>
+                                    <option value="">Selecione...</option>
+                                    <option value="esporadica">Esporádica</option>
+                                    <option value="diaria">Diária</option>
+                                    <option value="continua">Contínua</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Sazonalidade *</label>
+                            <select id="sazonalidade" required>
+                                <option value="">Selecione...</option>
+                                <option value="estavel">Estável – volume constante</option>
+                                <option value="sazonal">Sazonal – picos previsíveis</option>
+                                <option value="imprevisivel">Imprevisível – oscila sem padrão</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Quantas pessoas atuam?</label>
+                            <select id="numero_usuarios">
+                                <option value="1">1</option>
+                                <option value="2-5">2-5</option>
+                                <option value="6-10">6-10</option>
+                                <option value="10+">10+</option>
+                            </select>
+                        </div>
+                    </fieldset>
+
+                    <!-- BLOCO 4 -->
+                    <fieldset>
+                        <legend>Bloco 4 – Variabilidade e Exceções</legend>
+                        <div class="form-group">
+                            <label>O processo varia conforme cenário? *</label>
+                            <select id="varia_cenario" required>
+                                <option value="">Selecione...</option>
+                                <option value="sim">Sim</option>
+                                <option value="nao">Não</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Existem exceções frequentes? *</label>
+                            <select id="excecoes" required>
+                                <option value="">Selecione...</option>
+                                <option value="nao">Não</option>
+                                <option value="algumas">Algumas</option>
+                                <option value="muitas">Muitas</option>
+                            </select>
+                        </div>
+                    </fieldset>
+
+                    <!-- BLOCO 5 -->
+                    <fieldset>
+                        <legend>Bloco 5 – Padronização</legend>
+                        <div class="form-group">
+                            <label>Aceita padronização sem exceções sob medida? *</label>
+                            <select id="padronizacao" required>
+                                <option value="">Selecione...</option>
+                                <option value="sim">Sim</option>
+                                <option value="parcialmente">Parcialmente</option>
+                                <option value="nao">Não</option>
+                            </select>
+                        </div>
+                    </fieldset>
+
+                    <!-- BLOCO 6 -->
+                    <fieldset>
+                        <legend>Bloco 6 – Dependência Humana</legend>
+                        <div class="form-group">
+                            <label>O processo depende de pessoas específicas? *</label>
+                            <select id="dependencia_humana" required>
+                                <option value="">Selecione...</option>
+                                <option value="muito_baixa">Muito baixa – estagiário/perfil júnior executa</option>
+                                <option value="baixa">Baixa – qualquer analista executa</option>
+                                <option value="media">Média – especialistas ajudam</option>
+                                <option value="alta">Alta – poucos sabem fazer</option>
+                            </select>
+                        </div>
+                    </fieldset>
+
+                    <!-- BLOCO 7 -->
+                    <fieldset>
+                        <legend>Bloco 7 – Execução e Natureza</legend>
+                        <div class="form-group">
+                            <label>Como o processo é executado hoje? *</label>
+                            <select id="execucao_atual" required>
+                                <option value="">Selecione...</option>
+                                <option value="manual">Totalmente manual</option>
+                                <option value="parcial">Parcialmente automatizado</option>
+                                <option value="automatizado">Já automatizado (RPA/script/macro)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Natureza do processo</label>
+                            <select id="natureza_processo">
+                                <option value="transacional">Transacional (execução repetitiva)</option>
+                                <option value="analitico">Analítico (análise, conferência, validação)</option>
+                                <option value="misto">Misto</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Exige interpretação, análise ou decisão contextual? *</label>
+                            <select id="ia_interpretativa" required>
+                                <option value="">Selecione...</option>
+                                <option value="sim">Sim</option>
+                                <option value="nao">Não</option>
+                            </select>
+                        </div>
+                    </fieldset>
+
+                    <!-- BLOCO 8 -->
+                    <fieldset>
+                        <legend>Bloco 8 – Maturidade de Dados</legend>
+                        <div class="form-group">
+                            <label>Sistemas disponíveis</label>
+                            <select id="sistemas">
+                                <option value="erp">ERP</option>
+                                <option value="planilhas">Planilhas</option>
+                                <option value="ambos">Ambos</option>
+                                <option value="nenhum">Nenhum</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Qualidade dos dados *</label>
+                            <select id="qualidade_dados" required>
+                                <option value="">Selecione...</option>
+                                <option value="alta">Alta</option>
+                                <option value="media">Média</option>
+                                <option value="baixa">Baixa</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Método de conectividade *</label>
+                            <select id="conectividade" required>
+                                <option value="">Selecione...</option>
+                                <option value="api">API / Banco de Dados</option>
+                                <option value="leitura_tela">Leitura de Tela (RPA Puro)</option>
+                                <option value="hibrido">Híbrido</option>
+                            </select>
+                        </div>
+                    </fieldset>
+
+                    <!-- BLOCO 9 -->
+                    <fieldset>
+                        <legend>Bloco 9 – Risco Compliance</legend>
+                        <div class="form-group">
+                            <label>Falha pode gerar: (múltipla escolha)</label>
+                            <div class="checkbox-group">
+                                <label><input type="checkbox" value="multa"> Multa</label>
+                                <label><input type="checkbox" value="passivo_fiscal"> Passivo fiscal</label>
+                                <label><input type="checkbox" value="inconsistencia_contabil"> Inconsistência contábil</label>
+                                <label><input type="checkbox" value="prejuizo_financeiro"> Prejuízo financeiro direto</label>
+                                <label><input type="checkbox" value="nenhum"> Nenhum risco regulatório</label>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <!-- BLOCO 10 -->
+                    <fieldset>
+                        <legend>Bloco 10 – Prontidão</legend>
+                        <div class="form-group">
+                            <label>Disponibilidade de acessos *</label>
+                            <select id="acessos" required>
+                                <option value="">Selecione...</option>
+                                <option value="pronto">Pronto – credenciais já liberadas</option>
+                                <option value="em_processo">Em processo – depende de aprovação da TI</option>
+                                <option value="bloqueado">Bloqueado – burocracia alta ou restrições severas</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Interlocutor técnico *</label>
+                            <select id="interlocutor" required>
+                                <option value="">Selecione...</option>
+                                <option value="dedicado">Dedicado – responsável claro</option>
+                                <option value="compartilhado">Compartilhado – atende múltiplas áreas</option>
+                                <option value="inexistente">Inexistente – DB precisará descobrir sozinha</option>
+                            </select>
+                        </div>
+                    </fieldset>
+
+                    <!-- OBSERVAÇÕES -->
+                    <fieldset>
+                        <legend>Observações</legend>
+                        <div class="form-group">
+                            <label>Observações técnicas (uso exclusivo DB)</label>
+                            <textarea id="observacoes" rows="3" placeholder="Informações relevantes para o diagnóstico..."></textarea>
+                        </div>
+                    </fieldset>
+
+                    <!-- BOTÕES -->
+                    <div class="form-actions">
+                        <button type="button" class="btn-secondary" onclick="limparFormulario()">Limpar</button>
+                        <button type="button" class="btn-test" onclick="preencherTeste()">🎲 Teste Rápido</button>
+                        <button type="submit" class="btn-primary">Calcular Plano</button>
+                    </div>
+
+                    <!-- RESULTADO -->
+                    <div id="resultadoArea" class="resultado-card" style="display: none;">
+                        <h3>📋 Resultado do Diagnóstico</h3>
+                        <div id="resultadoConteudo"></div>
+                    </div>
+                </form>
+            </div>
+        </main>
+    </div>
+    <script src="js/api.js?v=_CACHE_BUST_"></script>
+    <script src="js/auth.js?v=_CACHE_BUST_"></script>
+    <script src="js/adm.js?v=_CACHE_BUST_"></script>
+</body>
+</html>

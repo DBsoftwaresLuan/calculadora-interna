@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora Industrial | DB Interna</title>
+    <link rel="stylesheet" href="css/style.css?v=_CACHE_BUST_">
+</head>
+<body>
+    <div class="app-container">
+        <nav class="sidebar">
+            <div class="sidebar-header">
+            <img src="assets/logo.png" alt="DB Softwares" class="sidebar-logo">
+            <p class="user-name" id="userName">Carregando...</p>
+        </div>
+            <ul class="nav-menu">
+                <li class="nav-item"><a href="dashboard.html">🏠 Dashboard</a></li>
+                <li class="nav-item"><a href="adm.html">📊 Calculadora ADM</a></li>
+                <li class="nav-item active"><a href="industrial.html">🏭 Calculadora Industrial</a></li>
+                <li class="nav-item"><a href="#" id="logoutBtn">🚪 Sair</a></li>
+            </ul>
+        </nav>
+        <main class="main-content">
+            <header class="top-bar">
+                <h1>Calculadora Industrial</h1>
+                <div class="top-bar-info">
+                    <span id="currentDate"></span>
+                </div>
+            </header>
+            <div class="content-area">
+                <form id="industrialForm">
+                    <!-- ========== IDENTIFICAÇÃO ========== -->
+                    <fieldset>
+                        <legend>📋 Identificação do Diagnóstico</legend>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Nome do processo industrial *</label>
+                                <input type="text" id="nome_processo" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Cliente *</label>
+                                <input type="text" id="cliente" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Consultor DB *</label>
+                                <input type="text" id="consultor" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Data do diagnóstico *</label>
+                                <input type="date" id="data_diagnostico" required>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <!-- ========== BLOCO 0 – ENQUADRAMENTO INICIAL ========== -->
+                    <fieldset>
+                        <legend>🏭 Bloco 0 – Enquadramento Inicial</legend>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Tipo do processo industrial *</label>
+                                <select id="tipo_processo" required>
+                                    <option value="">Selecione...</option>
+                                    <option value="contínuo">Contínuo</option>
+                                    <option value="discreto">Discreto</option>
+                                    <option value="batelada">Batelada</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Unidade analisada *</label>
+                                <select id="unidade_analisada" required>
+                                    <option value="">Selecione...</option>
+                                    <option value="maquina">Máquina</option>
+                                    <option value="linha">Linha</option>
+                                    <option value="celula">Célula</option>
+                                    <option value="planta">Planta</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Segmento industrial</label>
+                            <select id="segmento">
+                                <option value="">Selecione...</option>
+                                <option value="alimentos">Alimentos</option>
+                                <option value="quimico">Químico</option>
+                                <option value="papel_celulose">Papel & Celulose</option>
+                                <option value="metal mecanico">Metalmecânico</option>
+                                <option value="automotivo">Automotivo</option>
+                                <option value="farmaceutico">Farmacêutico</option>
+                                <option value="mineracao">Mineração</option>
+                                <option value="outro">Outro</option>
+                            </select>
+                        </div>
+                    </fieldset>
+
+                    <!-- ========== BLOCO 1 – CRITICIDADE OPERACIONAL ========== -->
+                    <fieldset>
+                        <legend>⚠️ Bloco 1 – Criticidade Operacional</legend>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>O processo é gargalo da operação? *</label>
+                                <select id="gargalo_planta" required>
+                                    <option value="">Selecione...</option>
+                                    <option value="sim">Sim</option>
+                                    <option value="nao">Não</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Existe redundância técnica? *</label>
+                                <select id="redundancia_tecnica" required>
+                                    <option value="">Selecione...</option>
+                                    <option value="completa">Completa</option>
+                                    <option value="parcial">Parcial</option>
+                                    <option value="nenhuma">Nenhuma</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Em caso de falha, há risco de incidente crítico? *</label>
+                            <select id="risco_incidente" required>
+                                <option value="">Selecione...</option>
+                                <option value="inexistente">Inexistente (apenas perda financeira)</option>
+                                <option value="ambiental">Ambiental (vazamento, descarte irregular)</option>
+                                <option value="seguranca">Segurança (risco à integridade física)</option>
+                            </select>
+                        </div>
+                    </fieldset>
+
+                    <!-- ========== BLOCO 2 – CUSTO DO TEMPO PARADO ========== -->
+                    <fieldset>
+                        <legend>💰 Bloco 2 – Custo do Tempo Parado</legend>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Custo estimado da hora parada *</label>
+                                <select id="custo_hora_parada" required>
+                                    <option value="">Selecione...</option>
+                                    <option value="<10k">&lt; R$ 10k</option>
+                                    <option value="10k-50k">R$ 10k – 50k</option>
+                                    <option value="50k-100k">R$ 50k – 100k</option>
+                                    <option value=">100k">&gt; R$ 100k</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Frequência de paradas não planejadas *</label>
+                                <select id="frequencia_paradas" required>
+                                    <option value="">Selecione...</option>
+                                    <option value="rara">Rara</option>
+                                    <option value="mensal">Mensal</option>
+                                    <option value="semanal">Semanal</option>
+                                    <option value="diaria">Diária/frequente</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Tempo médio de retomada (MTTR) *</label>
+                                <select id="mttr" required>
+                                    <option value="">Selecione...</option>
+                                    <option value="<15min">&lt; 15 minutos</option>
+                                    <option value="15-60min">15 – 60 minutos</option>
+                                    <option value="1-3h">1 – 3 horas</option>
+                                    <option value=">3h">&gt; 3 horas</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Impacto logístico da parada *</label>
+                                <select id="impacto_logistico" required>
+                                    <option value="">Selecione...</option>
+                                    <option value="interno">Interno (estoque/turnos seguintes absorvem)</option>
+                                    <option value="externo">Externo (atraso em caminhões, navios, quebra de contrato)</option>
+                                </select>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <!-- ========== BLOCO 3 – BATELADA, REFUGO E PERDAS ========== -->
+                    <fieldset>
+                        <legend>📦 Bloco 3 – Batelada, Refugo e Perdas</legend>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Processo por batelada? *</label>
+                                <select id="processo_batelada" required>
+                                    <option value="">Selecione...</option>
+                                    <option value="sim">Sim</option>
+                                    <option value="nao">Não</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Em caso de falha, ocorre: *</label>
+                                <select id="evento_falha" required>
+                                    <option value="">Selecione...</option>
+                                    <option value="ajuste_possivel">Ajuste possível</option>
+                                    <option value="perda_parcial">Perda parcial do lote</option>
+                                    <option value="perda_total">Perda total do lote</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Valor médio da batelada/lote *</label>
+                                <select id="valor_batelada" required>
+                                    <option value="">Selecione...</option>
+                                    <option value="<50k">&lt; R$ 50k</option>
+                                    <option value="50k-200k">R$ 50k – 200k</option>
+                                    <option value=">200k">&gt; R$ 200k</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Frequência histórica de perda *</label>
+                                <select id="frequencia_perda" required>
+                                    <option value="">Selecione...</option>
+                                    <option value="rara">Rara</option>
+                                    <option value="eventual">Eventual</option>
+                                    <option value="recorrente">Recorrente</option>
+                                </select>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <!-- ========== BLOCO 4 – VARIABILIDADE DO PROCESSO ========== -->
+                    <fieldset>
+                        <legend>📊 Bloco 4 – Variabilidade do Processo</legend>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Variabilidade de insumos/matéria-prima? *</label>
+                                <select id="variabilidade_insumo" required>
+                                    <option value="">Selecione...</option>
+                                    <option value="sim">Sim</option>
+                                    <option value="nao">Não</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Qualidade final oscila significativamente? *</label>
+                                <select id="qualidade_oscila" required>
+                                    <option value="">Selecione...</option>
+                                    <option value="sim">Sim</option>
+                                    <option value="nao">Não</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Ajustes frequentes durante a operação? *</label>
+                                <select id="ajustes_frequentes" required>
+                                    <option value="">Selecione...</option>
+                                    <option value="sim">Sim</option>
+                                    <option value="nao">Não</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Processo varia significativamente entre turnos? *</label>
+                                <select id="variabilidade_turno" required>
+                                    <option value="">Selecione...</option>
+                                    <option value="sim">Sim</option>
+                                    <option value="nao">Não</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Necessidade de explicação causa-raiz para decisão? *</label>
+                            <select id="necessidade_explicacao" required>
+                                <option value="">Selecione...</option>
+                                <option value="baixa">Baixa – regras claras</option>
+                                <option value="alta">Alta – contexto necessário</option>
+                            </select>
+                        </div>
+                    </fieldset>
+
+                    <!-- ========== BLOCO 5 – DEPENDÊNCIA HUMANA ========== -->
+                    <fieldset>
+                        <legend>👥 Bloco 5 – Dependência Humana</legend>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Dependência de operadores experientes específicos *</label>
+                                <select id="dependencia_humana" required>
+                                    <option value="">Selecione...</option>
+                                    <option value="muito_baixa">Muito baixa – qualquer operador executa</option>
+                                    <option value="baixa">Baixa – operador treinável em curto prazo</option>
+                                    <option value="media">Média – especialista ajuda</option>
+                                    <option value="alta">Alta – poucos sabem fazer</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Decisões críticas são baseadas em: *</label>
+                                <select id="base_decisao" required>
+                                    <option value="">Selecione...</option>
+                                    <option value="dados">Dados e indicadores</option>
+                                    <option value="experiencia">Experiência/feeling do operador</option>
+                                    <option value="ambos">Ambos</option>
+                                </select>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <!-- ========== BLOCO 6 – MATURIDADE DE DADOS ========== -->
+                    <fieldset>
+                        <legend>📈 Bloco 6 – Maturidade de Dados</legend>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Existem sensores / CLP / SCADA? *</label>
+                                <select id="sensores_clp" required>
+                                    <option value="">Selecione...</option>
+                                    <option value="sim">Sim, amplamente</option>
+                                    <option value="parcial">Parcialmente</option>
+                                    <option value="nao">Não</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Qualidade dos dados disponíveis *</label>
+                                <select id="qualidade_dados" required>
+                                    <option value="">Selecione...</option>
+                                    <option value="confiaveis">Confiáveis e históricos</option>
+                                    <option value="parciais">Parciais – algumas lacunas</option>
+                                    <option value="inexistentes">Inexistentes ou não confiáveis</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Uso dos dados atualmente *</label>
+                                <select id="uso_dados" required>
+                                    <option value="">Selecione...</option>
+                                    <option value="tempo_real">Tempo real</option>
+                                    <option value="pos_turno">Pós-turno/análise offline</option>
+                                    <option value="manual">Manual/inconsistente</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Complexidade de conectividade OT/IT *</label>
+                                <select id="complexidade_conectividade" required>
+                                    <option value="">Selecione...</option>
+                                    <option value="padronizada">Padronizada (OPC-UA, MQTT, banco de dados)</option>
+                                    <option value="legada">Legada (conversores/gateways físicos)</option>
+                                    <option value="invasiva">Invasiva (novos sensores precisam ser instalados)</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Integrações existentes (marque todos)</label>
+                            <div class="checkbox-group">
+                                <label><input type="checkbox" value="mes"> MES</label>
+                                <label><input type="checkbox" value="erp"> ERP</label>
+                                <label><input type="checkbox" value="scada"> SCADA</label>
+                                <label><input type="checkbox" value="nenhuma"> Nenhuma</label>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <!-- ========== BLOCO 7 – VISIBILIDADE ========== -->
+                    <fieldset>
+                        <legend>👁️ Bloco 7 – Visibilidade e Reação</legend>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Desvios e anomalias são detectados: *</label>
+                                <select id="deteccao_desvios" required>
+                                    <option value="">Selecione...</option>
+                                    <option value="antes">Antes da falha (preditivo)</option>
+                                    <option value="durante">Durante a falha (tempo real)</option>
+                                    <option value="apos">Após a falha (reativo)</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Alertas são: *</label>
+                                <select id="alertas" required>
+                                    <option value="">Selecione...</option>
+                                    <option value="automaticos">Automáticos no painel/SCADA</option>
+                                    <option value="manuais">Manuais (operador identifica)</option>
+                                    <option value="inexistentes">Inexistentes</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Tempo para entender um ocorrido do turno anterior *</label>
+                            <select id="tempo_entendimento" required>
+                                <option value="">Selecione...</option>
+                                <option value="imediato">Imediato (menos de 1h)</option>
+                                <option value="lento">Lento (mais de 1 turno)</option>
+                                <option value="inexistente">Inexistente (não é registrado)</option>
+                            </select>
+                        </div>
+                    </fieldset>
+
+                    <!-- ========== BLOCO 8 – REGIME E NOC ========== -->
+                    <fieldset>
+                        <legend>🕒 Bloco 8 – Regime Operacional e NOC</legend>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Regime de operação *</label>
+                                <select id="regime_operacao" required>
+                                    <option value="">Selecione...</option>
+                                    <option value="comercial">Comercial (segunda a sexta)</option>
+                                    <option value="turnos">Turnos (2 ou 3 turnos)</option>
+                                    <option value="24x7">24x7 (operação contínua)</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Existe plantão técnico ou suporte 24h? *</label>
+                                <select id="plantao_tecnico" required>
+                                    <option value="">Selecione...</option>
+                                    <option value="sim">Sim</option>
+                                    <option value="nao">Não</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Falhas fora do horário causam impacto relevante? *</label>
+                                <select id="impacto_fora_horario" required>
+                                    <option value="">Selecione...</option>
+                                    <option value="sim">Sim</option>
+                                    <option value="nao">Não</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Existe SLA interno de resposta? *</label>
+                                <select id="sla_interno" required>
+                                    <option value="">Selecione...</option>
+                                    <option value="sim">Sim</option>
+                                    <option value="nao">Não</option>
+                                </select>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <!-- ========== BLOCO 9 – DESPERDÍCIOS ========== -->
+                    <fieldset>
+                        <legend>♻️ Bloco 9 – Desperdícios e Gargalos (Lean/VSM)</legend>
+                        <div class="form-group">
+                            <label>Desperdícios identificados (marque todos)</label>
+                            <div class="checkbox-group">
+                                <label><input type="checkbox" value="espera"> Espera (tempo ocioso)</label>
+                                <label><input type="checkbox" value="defeitos"> Defeitos / Refugo</label>
+                                <label><input type="checkbox" value="retrabalho"> Retrabalho</label>
+                                <label><input type="checkbox" value="superprocessamento"> Superprocessamento</label>
+                                <label><input type="checkbox" value="transporte_info"> Transporte de informação/dados</label>
+                                <label><input type="checkbox" value="falta_padronizacao"> Falta de padronização entre turnos</label>
+                                <label><input type="checkbox" value="falta_visibilidade"> Falta de visibilidade ponta a ponta</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Gargalos de informação (marque todos)</label>
+                            <div class="checkbox-group">
+                                <label><input type="checkbox" value="maquina_supervisao"> Entre máquina e supervisão</label>
+                                <label><input type="checkbox" value="entre_turnos"> Entre turnos</label>
+                                <label><input type="checkbox" value="entre_areas"> Entre áreas</label>
+                                <label><input type="checkbox" value="dados_nao_usados"> Dados existem mas não são usados a tempo</label>
+                                <label><input type="checkbox" value="sem_dados"> Não há dado confiável no momento da decisão</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Impacto operacional dos desperdícios *</label>
+                            <select id="impacto_desperdicios" required>
+                                <option value="">Selecione...</option>
+                                <option value="baixo">Baixo – irritantes, mas não críticos</option>
+                                <option value="medio">Médio – afetam eficiência e estabilidade</option>
+                                <option value="alto">Alto – geram falhas, perdas ou risco recorrente</option>
+                            </select>
+                        </div>
+                    </fieldset>
+
+                    <!-- ========== BLOCO 10 – PRONTIDÃO ========== -->
+                    <fieldset>
+                        <legend>🔧 Bloco 10 – Prontidão de Infraestrutura</legend>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Maturidade do processo industrial *</label>
+                                <select id="maturidade_processo" required>
+                                    <option value="">Selecione...</option>
+                                    <option value="maduro">Maduro – operando há anos com parâmetros conhecidos</option>
+                                    <option value="em_ajuste">Em ajuste – processo novo ou máquina reformada</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Acessos a redes industriais (OT) *</label>
+                                <select id="acesso_rede_industrial" required>
+                                    <option value="">Selecione...</option>
+                                    <option value="liberado">Liberado – equipe já liberou</option>
+                                    <option value="restrito">Restrito – firewalls ou burocracia</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Disponibilidade da equipe de automação/TI do cliente *</label>
+                            <select id="disponibilidade_equipe" required>
+                                <option value="">Selecione...</option>
+                                <option value="dedicada">Dedicada e disponível</option>
+                                <option value="compartilhada">Compartilhada – atende múltiplas frentes</option>
+                                <option value="dificil">Difícil acesso</option>
+                            </select>
+                        </div>
+                    </fieldset>
+
+                    <!-- ========== OBSERVAÇÕES ========== -->
+                    <fieldset>
+                        <legend>📝 Observações</legend>
+                        <div class="form-group">
+                            <label>Observações técnicas relevantes <span class="badge">uso exclusivo DB</span></label>
+                            <textarea id="observacoes" rows="3"></textarea>
+                        </div>
+                    </fieldset>
+
+                    <!-- ========== BOTÕES ========== -->
+                    <div class="form-actions">
+                        <button type="button" class="btn-secondary" onclick="limparFormulario()">Limpar</button>
+                        <button type="button" class="btn-test" onclick="preencherTesteIndustrial()">🎲 Teste Rápido</button>
+                        <button type="submit" class="btn-primary">Calcular Plano Industrial</button>
+                    </div>
+
+                    <!-- ========== RESULTADO ========== -->
+                    <div id="resultadoArea" class="resultado-card" style="display: none;">
+                        <h3>🏭 Resultado do Diagnóstico Industrial</h3>
+                        <div id="resultadoConteudo"></div>
+                    </div>
+                </form>
+            </div>
+        </main>
+    </div>
+    <script src="js/api.js?v=_CACHE_BUST_"></script>
+    <script src="js/auth.js?v=_CACHE_BUST_"></script>
+    <script src="js/industrial.js?v=_CACHE_BUST_"></script>
+</body>
+</html>
