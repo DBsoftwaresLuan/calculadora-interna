@@ -395,7 +395,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 
 /* Custom select chevron */
 select {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%2394A3B8' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2394A3B8' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 12px center;
   background-size: 16px 16px;
@@ -404,7 +404,7 @@ select {
 }
 
 select:focus {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%233E569E' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%233E569E' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
   background-size: 16px 16px;
 }
 
@@ -825,7 +825,7 @@ button:active::after,
   background: rgba(62, 86, 158, 0.35);
 }
 
-/* ── SELECTION ───────────────────────────────────────────────── */
+/* ── SELECTION ────────────────────────────────────────────��──── */
 ::selection {
   background: rgba(62, 86, 158, 0.15);
   color: var(--blue);
@@ -1145,7 +1145,7 @@ input.has-value {
   background: var(--bg-surface);
 }
 
-/* ── CHECKBOX BOUNCE ───────────────────────────────────────── */
+/* ── CHECKBOX BOUNCE ──────────────────────────────────���────── */
 @keyframes cbBounce {
   0%   { transform: scale(1); }
   40%  { transform: scale(0.96); }
